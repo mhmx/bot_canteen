@@ -3,3 +3,7 @@ dist/
 config.py
 build_script.txt
 bot.log
+venv/
+__pycache__/
+.DS_Store
+work.bas

@@ -9,7 +9,7 @@ from config import TOKEN, GROUP_CHAT_ID, TIMEZONE, SEND_TIME, GO_TIME
 
 HOLIDAYS_URL = "https://isdayoff.ru/api/getdata?year={year}&month={month}&day={day}&cc=ru"
 
-poll_id = None
+poll_id = Noneфвыфыфвафыва
 
 LOG_FILE = "bot.log"
 
@@ -22,6 +22,22 @@ def log(message):
 
 bot = telebot.TeleBot(TOKEN)
 log("Bot started")
+
+@bot.message_handler(commands=['hello'])
+def hello_command(message):
+    """Обработчик команды /hello - приветствие пользователя"""
+    user_name = message.from_user.first_name or message.from_user.username or "пользователь"
+    current_time = datetime.datetime.now(pytz.timezone(TIMEZONE)).strftime("%H:%M")
+    
+    greeting = f"Привет, {user_name}! \n"
+    greeting += f"Сейчас {current_time} по времени {TIMEZONE.split('/')[-1]}.\n"
+    greeting += "Я бот для организации походов в столовую! 🍽️"
+    
+    try:
+        bot.reply_to(message, greeting)
+        log(f"Отправлено приветствие пользователю {message.from_user.id} ({user_name})")
+    except Exception as e:
+        log(f"Ошибка отправки приветствия: {e}")
 
 def is_holiday():
     now = datetime.datetime.now(pytz.timezone(TIMEZONE))
